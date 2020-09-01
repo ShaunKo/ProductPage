@@ -7,111 +7,111 @@ export const item = {
 };
 
 export const transport = [
-  "郵寄寄送 90元",
-  "宅配／遞送 90元",
-  "貨到付款 130元",
-  "面交取貨 0 元",
-  "面交取貨付款 0 元",
+  '郵寄寄送 90元',
+  '宅配／遞送 90元',
+  '貨到付款 130元',
+  '面交取貨 0 元',
+  '面交取貨付款 0 元',
 ];
 
 export const imageUri = [
   '/Users/shaun/Desktop/截圖 2020-08-25 下午5.16.05.png',
   '/Users/shaun/Desktop/截圖 2020-08-25 下午5.16.18.png',
   '/Users/shaun/Desktop/截圖 2020-08-25 下午5.16.30.png',
-]
+];
 
 export const payment = [
-  "Pi 拍錢包X支付連   最高P幣4%回饋(說明)",
-  "PChomePay支付連 信用卡",
-  "PChomePay支付連 現金 (ATM、餘額、銀行支付)",
-  "PChome國際連儲值餘額儲值",
-  "銀行或郵局轉帳",
-  "郵局無摺存款",
-  "貨到付款",
-  "面交取貨付款",
+  'Pi 拍錢包X支付連   最高P幣4%回饋(說明)',
+  'PChomePay支付連 信用卡',
+  'PChomePay支付連 現金 (ATM、餘額、銀行支付)',
+  'PChome國際連儲值餘額儲',
+  '銀行或郵局轉帳',
+  '郵局無摺存款',
+  '貨到付款',
+  '面交取貨付款',
 ];
 
 export const DATA = [
   {
-    title: "First Item",
-    price:"45",
-    uri:"/Users/shaun/Desktop/截圖 2020-08-25 下午5.16.30.png",
+    title: 'First Item',
+    price: '45',
+    uri: '/Users/shaun/Desktop/截圖 2020-08-25 下午5.16.30.png',
   },
   {
-    title: "First Item",
-    price:"45654",
-    uri:"/Users/shaun/Desktop/截圖 2020-08-25 下午5.16.30.png",
+    title: 'First Item',
+    price: '45',
+    uri: '/Users/shaun/Desktop/截圖 2020-08-25 下午5.16.30.png',
   },
   {
-    title: "First Item",
-    price:"466",
-    uri:"/Users/shaun/Desktop/截圖 2020-08-25 下午5.16.30.png",
+    title: 'First Item',
+    price: '45',
+    uri: '/Users/shaun/Desktop/截圖 2020-08-25 下午5.16.30.png',
   },
 ];
 
-
 export const DATA1 = [
   [
-  {
-    title: "1 Item",
-    price:"45",
-    uri:"/Users/shaun/Desktop/截圖 2020-08-25 下午5.16.30.png",
-  },
-  {
-    title: "2 Item",
-    price:"45654",
-    uri:"/Users/shaun/Desktop/截圖 2020-08-25 下午5.16.30.png",
-  },
-],[
-  {
-    title: "3 Item",
-    price:"466",
-    uri:"/Users/shaun/Desktop/截圖 2020-08-25 下午5.16.30.png",
-  },
-  {
-    title: "4 Item",
-    price:"466",
-    uri:"/Users/shaun/Desktop/截圖 2020-08-25 下午5.16.30.png",
-  },
-],
-[
-  {
-    title: "5 Item",
-    price:"466",
-    uri:"/Users/shaun/Desktop/截圖 2020-08-25 下午5.16.30.png",
-  },
-  {
-    title: "6 Item",
-    price:"466",
-    uri:"/Users/shaun/Desktop/截圖 2020-08-25 下午5.16.30.png",
-  },
-],
+    {
+      title: '1 Item',
+      price: '45',
+      uri: '/Users/shaun/Desktop/截圖 2020-08-25 下午5.16.30.png',
+    },
+    {
+      title: '1 Item',
+      price: '45',
+      uri: '/Users/shaun/Desktop/截圖 2020-08-25 下午5.16.30.png',
+    },
+  ],
+  [
+    {
+      title: '1 Item',
+      price: '45',
+      uri: '/Users/shaun/Desktop/截圖 2020-08-25 下午5.16.30.png',
+    },
+    {
+      title: '1 Item',
+      price: '45',
+      uri: '/Users/shaun/Desktop/截圖 2020-08-25 下午5.16.30.png',
+    },
+  ],
+  [
+    {
+      title: '1 Item',
+      price: '45',
+      uri: '/Users/shaun/Desktop/截圖 2020-08-25 下午5.16.30.png',
+    },
+    {
+      title: '1 Item',
+      price: '45',
+      uri: '/Users/shaun/Desktop/截圖 2020-08-25 下午5.16.30.png',
+    },
+  ],
 ];
 
 export const countsOfBuyer = [
   {
-    buyer:'sfad***',
-    count:'1',
+    buyer: 'sfad***',
+    count: '1',
     time: '2020-8-19 01:35:30',
   },
   {
-    buyer:'sfad***',
-    count:'2',
+    buyer: 'sfad***',
+    count: '2',
     time: '2020-8-19 01:35:30',
   },
   {
-    buyer:'sfad***',
-    count:'1',
+    buyer: 'sfad***',
+    count: '1',
     time: '2020-8-19 01:35:30',
   },
   {
-    buyer:'sfad***',
-    count:'2',
+    buyer: 'sfad***',
+    count: '2',
     time: '2020-8-19 01:35:30',
   },
   {
-    buyer:'sfad***',
-    count:'1',
+    buyer: 'sfad***',
+    count: '1',
     time: '2020-8-19 01:35:30',
   },
-]
+];

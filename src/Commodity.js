@@ -11,7 +11,6 @@ import {
 } from 'react-native';
 import {Container} from 'native-base';
 import {Avatar, Icon} from 'react-native-elements';
-import {FloatingAction} from 'react-native-floating-action';
 import {
   item,
   transport,
@@ -21,11 +20,13 @@ import {
   DATA1,
   countsOfBuyer,
 } from './Data.js';
+import ActionButton from 'react-native-action-button';
 
 export default class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      //下拉
       dropdownPay: false,
       dropdownDeliver: false,
       //轉換button顯示頁面
@@ -206,15 +207,26 @@ export default class App extends Component {
   };
   floatIcon = () => {
     return (
-      <FloatingAction
+      <ActionButton
         style={styles.bottom}
-        floatingIcon={<Icon name="chevron-left" />}
+        buttonColor="transparent"
+        buttonTextStyle={styles.actionButton}
+        buttonText="↥"
+        verticalOrientation="up"
+        onPress={() => {
+          this.goToTop();
+        }}
       />
     );
   };
+  goToTop = () => {
+    this.scroll.scrollTo({x: 0, y: 0, animated: true});
+  };
+
   render() {
     return (
       <Container>
+        {this.floatIcon()}
         <Animated.View
           style={[
             styles.animatedContainer,
@@ -261,13 +273,19 @@ export default class App extends Component {
         </Animated.View>
         {/* <Content> */}
         <Animated.ScrollView
+          ref={(c) => {
+            this.scroll = c;
+          }}
           overScrollMode={'never'}
           scrollEventThrottle={16}
-          onScroll={Animated.event([
-            {
-              nativeEvent: {contentOffset: {y: this.state.scrollY}},
-            },
-          ])}>
+          onScroll={Animated.event(
+            [
+              {
+                nativeEvent: {contentOffset: {y: this.state.scrollY}},
+              },
+            ],
+            {useNativeDriver: false},
+          )}>
           <View style={styles.flex1}>
             <ImageBackground
               style={styles.image}
@@ -508,9 +526,6 @@ export default class App extends Component {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
   image: {
     flex: 1,
     height: 355,
@@ -523,9 +538,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     opacity: 0.8,
     margin: 5,
-  },
-  opacity: {
-    opacity: 0.2,
   },
   imageIcon: {
     color: 'white',
@@ -810,11 +822,14 @@ const styles = StyleSheet.create({
     marginTop: 20,
     height: 30,
   },
-
   //floatIcon
   bottom: {
     flex: 1,
     position: 'absolute',
     bottom: 10,
+    zIndex: 1000,
+  },
+  actionButton: {
+    color: 'black',
   },
 });

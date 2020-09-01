@@ -16,6 +16,7 @@
     "react-native-action-button": "^2.8.5",
     "react-native-elements": "^2.2.1",
     "react-native-floating-action": "^1.21.0",
+    "react-native-scroll-up": "^0.1.6",
     "react-native-vector-icons": "^7.0.0"
   },
   "devDependencies": {
