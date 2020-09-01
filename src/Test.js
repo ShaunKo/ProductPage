@@ -16,12 +16,13 @@ import {
   transport,
   imageUri,
   payment,
-  DATA,
-  DATA1,
+  Product,
+  Product1,
   countsOfBuyer,
 } from './Data.js';
 import ActionButton from 'react-native-action-button';
-// banner 拉出  map 跑
+import Lightbox from 'react-native-lightbox';
+
 export default class App extends Component {
   constructor(props) {
     super(props);
@@ -32,13 +33,14 @@ export default class App extends Component {
       //轉換button顯示頁面
       switchButton: 'produceDesc', //productDesc/ qa / counts
       scrollY: new Animated.Value(0),
+      isOpen: false, //lightbox
     };
   }
 
   componentDidMount() {
     //console.log(DATA1.fill(0))
-    DATA1.map((data) => {
-      Array(DATA1.length)
+    Product1.map((data) => {
+      Array(Product1.length)
         .fill(0)
         .map((i) => {
           console.log(data[i]);
@@ -220,7 +222,7 @@ export default class App extends Component {
     );
   };
   goToTop = () => {
-    this.scroll.scrollTo({x: 0, y: 0, animated: true});
+    this.scroll.scrollTo({x: 0, y: 0, animated: true, useNativeDriver: true});
   };
 
   render() {
@@ -287,34 +289,50 @@ export default class App extends Component {
             {useNativeDriver: false},
           )}>
           <View style={styles.flex1}>
-            <ImageBackground
-              style={styles.image}
-              source={{
-                uri: '/Users/shaun/Desktop/截圖 2020-08-24 下午2.22.19.png',
+            <Lightbox
+              didOpen={() => {
+                this.setState({isOpen: true});
+              }}
+              onClose={() => {
+                this.setState({isOpen: false});
               }}>
-              <View style={styles.flex1WithDirection}>
-                <View style={styles.iconOnImageViewLeft}>
-                  <TouchableOpacity style={styles.imageIconContainer}>
-                    <Icon name="chevron-left" color="white" />
-                  </TouchableOpacity>
-                </View>
-                <View style={styles.iconOnImageViewCenter}>
-                  <TouchableOpacity style={styles.imageIconContainer}>
-                    <Icon name="shopping-cart" color="white" />
-                  </TouchableOpacity>
-                </View>
-                <View style={styles.flex1}>
-                  <TouchableOpacity style={styles.imageIconContainer}>
-                    <Icon name="more-vert" color="white" />
-                  </TouchableOpacity>
-                </View>
-              </View>
-            </ImageBackground>
-
-            <View style={styles.itemDataContainer}>
+              {this.state.isOpen ? (
+                <Image
+                  style={styles.image1}
+                  source={{
+                    uri: '/Users/shaun/Desktop/截圖 2020-08-24 下午2.22.19.png',
+                  }}
+                />
+              ) : (
+                <ImageBackground
+                  style={styles.image}
+                  source={{
+                    uri: '/Users/shaun/Desktop/截圖 2020-08-24 下午2.22.19.png',
+                  }}>
+                  <View style={styles.flex1WithDirection}>
+                    <View style={styles.flex5}>
+                      <TouchableOpacity style={styles.imageIconContainer}>
+                        <Icon name="chevron-left" color="white" />
+                      </TouchableOpacity>
+                    </View>
+                    <View style={styles.iconOnImageViewCenter}>
+                      <TouchableOpacity style={styles.imageIconContainer}>
+                        <Icon name="shopping-cart" color="white" />
+                      </TouchableOpacity>
+                    </View>
+                    <View style={styles.flex1}>
+                      <TouchableOpacity style={styles.imageIconContainer}>
+                        <Icon name="more-vert" color="white" />
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                </ImageBackground>
+              )}
+            </Lightbox>
+            <View style={styles.margin15}>
               <Text style={styles.itemNameText}>{item.itemName}</Text>
               <View style={styles.itemDataContentView}>
-                <View style={styles.iconOnImageViewLeft}>
+                <View style={styles.flex5}>
                   <Text style={styles.itemPriceText}>${item.price}</Text>
                   <Text style={styles.itemSaleText}>
                     銷售 {item.salesVolume}
@@ -340,7 +358,7 @@ export default class App extends Component {
                 <View style={styles.dropdownTitleView}>
                   <Text style={styles.dropdownTitle}>運送 NT$0-NT$130</Text>
                 </View>
-                <View style={styles.dropdownViewCenter} />
+                <View style={styles.flex2Direction} />
 
                 <View style={styles.dropdownIcon}>
                   <Icon
@@ -351,7 +369,7 @@ export default class App extends Component {
                 </View>
               </TouchableOpacity>
               {this.state.dropdownDeliver ? (
-                <View style={styles.dropdownViewMargin}>
+                <View style={styles.margin10}>
                   {transport.map((trans) => {
                     return <Text>{trans}</Text>;
                   })}
@@ -361,11 +379,11 @@ export default class App extends Component {
               )}
               {this.separator()}
               <TouchableOpacity
-                style={styles.dropdownViewMarginPay}
+                style={styles.dropdownContainer}
                 onPress={() => {
                   this.setState({dropdownPay: !this.state.dropdownPay});
                 }}>
-                <View style={styles.dropdownPayView}>
+                <View style={styles.dropdownIcon}>
                   <Text style={styles.payFontSize}>付款</Text>
                 </View>
                 <View style={styles.dropdownPayImageView}>
@@ -380,7 +398,7 @@ export default class App extends Component {
                     );
                   })}
                 </View>
-                <View style={styles.dropdowniconDown}>
+                <View style={styles.dropdownIcon}>
                   <Icon
                     name={
                       this.state.dropdownPay ? 'expand-less' : 'expand-more'
@@ -389,7 +407,7 @@ export default class App extends Component {
                 </View>
               </TouchableOpacity>
               {this.state.dropdownPay ? (
-                <View style={styles.dropdownViewMargin}>
+                <View style={styles.margin10}>
                   {payment.map((pay) => {
                     return <Text>{pay}</Text>;
                   })}
@@ -415,7 +433,7 @@ export default class App extends Component {
                 </View>
                 <View style={styles.flex5}>
                   <Text>1313健康館fff4132000的賣場</Text>
-                  <View style={styles.sellerContainer}>
+                  <View style={styles.flex2Direction}>
                     <View style={styles.sellerImageView}>
                       {imageUri.map((uri) => {
                         return (
@@ -446,48 +464,48 @@ export default class App extends Component {
                 onPress={() => {
                   this.setState({switchButton: 'productDesc'});
                 }}>
-                <Text style={styles.switchThreeButtonTitle}>商品說明</Text>
+                <Text style={styles.alignSelfCenter}>商品說明</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.flex1}
                 onPress={() => {
                   this.setState({switchButton: 'qa'});
                 }}>
-                <Text style={styles.switchThreeButtonTitle}>問與答</Text>
+                <Text style={styles.alignSelfCenter}>問與答</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.flex1}
                 onPress={() => {
                   this.setState({switchButton: 'counts'});
                 }}>
-                <Text style={styles.switchThreeButtonTitle}>購買人次</Text>
+                <Text style={styles.alignSelfCenter}>購買人次</Text>
               </TouchableOpacity>
             </View>
             {this.switchButton()}
             {this.separator()}
             <View>
-              <Text style={styles.dropdownViewMargin}>看此商品的人也看了</Text>
+              <Text style={styles.margin10}>看此商品的人也看了</Text>
               <FlatList
-                data={DATA}
+                data={Product}
                 horizontal={true}
                 renderItem={this.renderItem}
                 ItemSeparatorComponent={() => {
                   return <View style={styles.flatListSeparator} />;
                 }}
-                keyExtractor={(item) => item.id}
+                keyExtractor={(product) => product.id}
               />
             </View>
           </View>
           {this.separator()}
           <View style={styles.recommandationBackground}>
-            <Text style={styles.dropdownViewMargin}>相關推薦</Text>
+            <Text style={styles.margin10}>相關推薦</Text>
           </View>
-          {Array(DATA1.length)
+          {Array(Product1.length)
             .fill(0)
             .map((v, i) => {
               return (
                 <View style={styles.onlyFlexDirection}>
-                  {DATA1[i].map((data) => {
+                  {Product1[i].map((data) => {
                     return (
                       <TouchableOpacity style={styles.recommandationTouch}>
                         <Image
@@ -527,9 +545,16 @@ export default class App extends Component {
 
 const styles = StyleSheet.create({
   image: {
+    //商品圖
     flex: 1,
     height: 355,
   },
+  image1: {
+    //點擊後商品圖
+    height: 355,
+    justifyContent: 'center',
+  },
+  //商品圖上的icon
   imageIconContainer: {
     borderRadius: 30,
     backgroundColor: 'grey',
@@ -542,16 +567,15 @@ const styles = StyleSheet.create({
   imageIcon: {
     color: 'white',
   },
-  iconOnImageViewLeft: {
-    flex: 5,
-  },
   iconOnImageViewCenter: {
     flex: 1,
     alignItems: 'center',
   },
+  //品名
   itemNameText: {
     fontSize: 18,
   },
+  //價格
   itemPriceText: {
     fontSize: 20,
     color: 'red',
@@ -559,7 +583,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     marginBottom: 5,
   },
-  itemDataContainer: {
+  margin15: {
     margin: 15,
   },
   itemDataContentView: {
@@ -575,6 +599,7 @@ const styles = StyleSheet.create({
     color: 'grey',
     marginTop: 10,
   },
+  //下拉
   dropdownContainer: {
     margin: 10,
     flexDirection: 'row',
@@ -586,27 +611,12 @@ const styles = StyleSheet.create({
   dropdownTitle: {
     fontSize: 15,
   },
-  dropdownViewCenter: {
-    flex: 2,
-    flexDirection: 'row',
-  },
   dropdownIcon: {
     flex: 1,
     justifyContent: 'center',
   },
-  dropdownViewMargin: {
-    margin: 10,
-  },
   margin10: {
     margin: 10,
-  },
-  dropdownViewMarginPay: {
-    margin: 10,
-    flexDirection: 'row',
-  },
-  dropdownPayView: {
-    flex: 1,
-    justifyContent: 'center',
   },
   payFontSize: {
     fontSize: 15,
@@ -624,7 +634,7 @@ const styles = StyleSheet.create({
   sellerTitle: {
     padding: 10,
   },
-  sellerContainer: {
+  flex2Direction: {
     flex: 2,
     flexDirection: 'row',
   },
@@ -650,10 +660,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginBottom: 5,
   },
-  dropdowniconDown: {
-    flex: 1,
-    justifyContent: 'center',
-  },
+  //大頭貼
   avatar: {
     backgroundColor: 'grey',
   },
@@ -662,9 +669,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     margin: 10,
     alignItems: 'center',
-  },
-  switchThreeButtonTitle: {
-    alignSelf: 'center',
   },
   flatListSeparator: {
     width: 5,
@@ -692,6 +696,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: 'orange',
   },
+  //分割器
   separator: {
     borderWidth: 3,
     borderColor: '#DDDDDD',

@@ -31,7 +31,7 @@ export const payment = [
   '面交取貨付款',
 ];
 
-export const DATA = [
+export const Product = [
   {
     title: 'First Item',
     price: '45',
@@ -49,7 +49,7 @@ export const DATA = [
   },
 ];
 
-export const DATA1 = [
+export const Product1 = [
   [
     {
       title: '1 Item',
