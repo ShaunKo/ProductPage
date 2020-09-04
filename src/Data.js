@@ -115,3 +115,12 @@ export const countsOfBuyer = [
     time: '2020-8-19 01:35:30',
   },
 ];
+
+export const t = [
+  {
+  id: "21916979988425",
+  class: "002000040007",
+  name: "(免運費)時尚顯瘦女泳衣 連體式泳衣 女士泳裝",
+  num: 14,
+  }
+  ]
