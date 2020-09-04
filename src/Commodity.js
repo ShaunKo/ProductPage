@@ -51,7 +51,7 @@ export default class Commodity extends Component {
   }
   getApi = () => {
     return fetch(
-      'https://rapi.ruten.com.tw/api/items/v2/list?gno=21916979988425&level=detail',
+      'https://rapi.ruten.com.tw/api/items/v2/list?gno=22011336677547&level=detail',
     )
       .then((response) => response.json())
       .then((json) => {
@@ -134,16 +134,34 @@ export default class Commodity extends Component {
     return (
       <View>
         {this.state.switchButton === 'productDesc' ? (
-          imageUri.map((uri) => {
-            return (
-              <Image
-                style={styles.image}
-                source={{
-                  uri: uri,
-                }}
-              />
-            );
-          })
+          // imageUri.map((uri) => {
+          //   return (
+          //     <Image
+          //       style={styles.image}
+          //       source={{
+          //         uri: uri,
+          //       }}
+          //     />
+          //   );
+          // })
+          <View style={{flexDirection:'row',padding:10}}>
+      <View style={{width: width/3}}>
+        {['分類', '庫存數', '上架時間', '使用狀況', '所在地'].map((item) => {
+          return(
+            <View style={{backgroundColor:'grey',borderRadius:3,borderWidth:1}}>
+          <Text style={{fontSize:20,padding:10}}>{item}</Text>
+          </View>
+          )
+        })}
+      </View>
+      <View style={{width: width/2}}>
+      {this.state.image.map((item) => {
+        return(
+        <Text style={{fontSize:20,padding:10}}>{item}</Text>
+        )
+      })}
+    </View>
+    </View>
         ) : this.state.switchButton === 'qa' ? (
           <View>
             {this.qA('Q')}
