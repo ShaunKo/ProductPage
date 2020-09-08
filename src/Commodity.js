@@ -3,7 +3,6 @@ import {
   StyleSheet,
   View,
   Text,
-  ImageBackground,
   ScrollView,
   Image,
   TouchableOpacity,
@@ -15,20 +14,11 @@ export const {width, height} = Dimensions.get('window');
 
 import {Container} from 'native-base';
 import {Avatar, Icon} from 'react-native-elements';
-import {
-  item,
-  transport,
-  imageUri,
-  payment,
-  Product,
-  Product1,
-  countsOfBuyer,
-  t,
-} from './Data.js';
+import {imageUri, Product, Product1, countsOfBuyer} from './Data.js';
 import ActionButton from 'react-native-action-button';
 import Lightbox from 'react-native-lightbox';
-import { WebView } from 'react-native-webview';
-
+import Test1 from './Test1.js';
+//父傳子
 export default class Commodity extends Component {
   constructor(props) {
     super(props);
@@ -42,11 +32,11 @@ export default class Commodity extends Component {
       isOpen: false, //lightbox
       api: '',
       image: [],
-      deliverMin: 0,
-      deliverMax: 0,
+      deliverMin: 0, //運送最小值
+      deliverMax: 0, //運送最大值
       deliver: [],
-      deliverValues: [],
-      deliverKeys: [],
+      deliverKeys: [], //運送方式
+      table: [], //表格資料
     };
   }
   getApi = () => {
@@ -58,14 +48,35 @@ export default class Commodity extends Component {
         let resource = json.data.find(function (i, index, array) {
           return i;
         });
-        console.log(resource);
+        //console.log(resource);
         let image = resource.images.url;
         //運送價格大小
         let deliverMin = Math.min(...Object.values(resource.deliver_way));
         let deliverMax = Math.max(...Object.values(resource.deliver_way));
-        let deliverKeys= Object.keys(resource.deliver_way)
-        let deliverValues = Object.values(resource.deliver_way);
-        this.setState({api: resource, image: image, deliverMin, deliverMax,deliverKeys,deliverValues});
+        let deliverKeys = Object.keys(resource.deliver_way);
+        //表格資料
+        let table = [];
+        let time = new Date(resource.post_time * 1000);
+        table.push('');
+        table.push(resource.num);
+        table.push(
+          time.getFullYear() +
+            '-' +
+            (time.getMonth() + 1) +
+            '-' +
+            time.getDate(),
+        );
+        table.push('全新');
+        table.push(resource.location);
+
+        this.setState({
+          api: resource,
+          image: image,
+          deliverMin,
+          deliverMax,
+          deliverKeys,
+          table,
+        });
         return resource;
       })
       .catch((error) => {
@@ -134,34 +145,31 @@ export default class Commodity extends Component {
     return (
       <View>
         {this.state.switchButton === 'productDesc' ? (
-          // imageUri.map((uri) => {
-          //   return (
-          //     <Image
-          //       style={styles.image}
-          //       source={{
-          //         uri: uri,
-          //       }}
-          //     />
-          //   );
-          // })
-          <View style={{flexDirection:'row',padding:10}}>
-      <View style={{width: width/3}}>
-        {['分類', '庫存數', '上架時間', '使用狀況', '所在地'].map((item) => {
-          return(
-            <View style={{backgroundColor:'grey',borderRadius:3,borderWidth:1}}>
-          <Text style={{fontSize:20,padding:10}}>{item}</Text>
+          <View>
+            <Test1 />
+            <View style={styles.tableContainer}>
+              <View style={{width: width / 3}}>
+                {['分類', '庫存數', '上架時間', '使用狀況', '所在地'].map(
+                  (item) => {
+                    return (
+                      <View style={styles.tableTitle}>
+                        <Text style={styles.tableText}>{item}</Text>
+                      </View>
+                    );
+                  },
+                )}
+              </View>
+              <View style={{width: width - 143}}>
+                {this.state.table.map((item) => {
+                  return (
+                    <View style={styles.tableData}>
+                      <Text style={styles.tableText}>{item}</Text>
+                    </View>
+                  );
+                })}
+              </View>
+            </View>
           </View>
-          )
-        })}
-      </View>
-      <View style={{width: width/2}}>
-      {this.state.image.map((item) => {
-        return(
-        <Text style={{fontSize:20,padding:10}}>{item}</Text>
-        )
-      })}
-    </View>
-    </View>
         ) : this.state.switchButton === 'qa' ? (
           <View>
             {this.qA('Q')}
@@ -280,11 +288,7 @@ export default class Commodity extends Component {
   //最底下按鈕
   footerButton = (icon, text) => {
     return (
-      <TouchableOpacity style={styles.bottomButton} onPress={()=>{
-        let array = []
-        array.push(this.state.api.deliver_way)
-        console.log(array)
-      }}>
+      <TouchableOpacity style={styles.bottomButton} onPress={() => {}}>
         <Icon name={icon} />
         <Text>{text}</Text>
       </TouchableOpacity>
@@ -418,15 +422,34 @@ export default class Commodity extends Component {
               </View>
             </TouchableOpacity>
             {this.state.dropdownDeliver ? (
-             
-              <View style={styles.margin10}>
+              <View style={styles.dropdownContent}>
                 {this.state.deliverKeys.map((trans) => {
-                  return <Text>{ 
-                    trans === 'SEVEN' ? '7-11取貨' :
-                    trans === 'CVS_COD' ? '全家、OK、萊爾富取貨付款':
-                    trans === 'SEVEN_COD' ? '7-11取貨付款':
-                    trans === 'HOUSE' ? '宅配/快遞' : ''
-                  }</Text>
+                  let seven = allData.deliver_way.SEVEN;
+                  let cvs_cod = allData.deliver_way.CVS_COD;
+                  let seven_cod = allData.deliver_way.SEVEN_COD;
+                  let house = allData.deliver_way.HOUSE;
+                  let post = allData.deliver_way.POST;
+                  let cod = allData.deliver_way.COD;
+                  let self = allData.deliver_way.SELF;
+                  return (
+                    <Text style={styles.padding5}>
+                      {trans === 'SEVEN'
+                        ? '7-11取貨' + ' ' + seven
+                        : trans === 'CVS_COD'
+                        ? '全家、OK、萊爾富取貨付款' + ' ' + cvs_cod
+                        : trans === 'SEVEN_COD'
+                        ? '7-11取貨付款' + ' ' + seven_cod
+                        : trans === 'HOUSE'
+                        ? '宅配/快遞' + ' ' + house
+                        : trans === 'POST'
+                        ? '郵寄寄送' + ' ' + post
+                        : trans === 'COD'
+                        ? '貨到付款' + ' ' + cod
+                        : trans === 'SELF'
+                        ? '面交取貨' + ' ' + self
+                        : ''}
+                    </Text>
+                  );
                 })}
               </View>
             ) : (
@@ -461,9 +484,29 @@ export default class Commodity extends Component {
               </View>
             </TouchableOpacity>
             {this.state.dropdownPay ? (
-              <View style={styles.margin10}>
-                {payment.map((pay) => {
-                  return <Text>{pay}</Text>;
+              <View style={styles.dropdownContent}>
+                {this.state.api.pay_way.map((pay) => {
+                  return (
+                    <Text style={styles.padding5}>
+                      {pay === 'PAYLINK'
+                        ? 'Pi 拍錢包Ｘ支付連  最高P幣４％回饋'
+                        : pay === 'PP_PI'
+                        ? 'PChomePay支付連 信用卡（一次付清）'
+                        : pay === 'PP_CRD'
+                        ? 'PChomePay支付連 現金（ATM、餘額、銀行支付）'
+                        : pay === 'INTERPAY'
+                        ? 'PChomePay國際連儲值餘額'
+                        : pay === 'ATM'
+                        ? '銀行或郵局轉帳'
+                        : pay === 'PS'
+                        ? '郵局無摺存款'
+                        : pay === 'COD'
+                        ? '貨到付款'
+                        : pay === 'F2F'
+                        ? '面交取貨付款'
+                        : ''}
+                    </Text>
+                  );
                 })}
               </View>
             ) : (
@@ -471,16 +514,16 @@ export default class Commodity extends Component {
             )}
           </View>
           {this.separator()}
-          <View
+          {/* <View
             style={[styles.width, styles.padding10, styles.onlyFlexDirection]}>
             <Text style={{width: width - 44.3}}>
               商品規格  總庫存共{allData.num}件，共？款
             </Text>
             <Icon name="chevron-right" />
           </View>
-          {this.separator()}
+          {this.separator()} */}
           <View>
-            <Text style={styles.padding10}>賣家資訊 上線中</Text>
+            <Text style={styles.padding10}>賣家資訊</Text>
             <View style={styles.sellerSeparator} />
             <View
               style={[
@@ -493,13 +536,13 @@ export default class Commodity extends Component {
                   size="small"
                   rounded
                   title="F"
-                  onPress={() => console.log('Works!')}
+                  onPress={() => { this.props.navigation.navigate('Personal')}}
                   activeOpacity={0.7}
                   containerStyle={styles.avatar}
                 />
               </View>
               <View style={styles.sellContainer}>
-                <Text>1313健康館fff4132000的賣場</Text>
+                <Text>1313健康館{allData.user}的賣場</Text>
                 <View style={styles.sellerImageContainer}>
                   <View style={styles.sellerImageView}>
                     {imageUri.map((uri) => {
@@ -668,6 +711,13 @@ const styles = StyleSheet.create({
     height: 20,
     borderRadius: 3,
     margin: 5,
+  },
+  dropdownContent: {
+    borderTopWidth: 1,
+    borderColor: 'grey',
+    width: width - 40,
+    alignSelf: 'center',
+    padding: 5,
   },
   dropdownIconWidthHeight: {
     width: 30,
@@ -886,5 +936,26 @@ const styles = StyleSheet.create({
   },
   actionButton: {
     color: 'black',
+  },
+  //表格
+  tableContainer: {
+    flexDirection: 'row',
+    padding: 10,
+  },
+  tableTitle: {
+    backgroundColor: 'grey',
+    borderRadius: 3,
+    borderWidth: 1,
+    borderTopWidth: 1,
+    height: 40.3,
+  },
+  tableText: {
+    fontSize: 20,
+    padding: 10,
+  },
+  tableData: {
+    borderRadius: 3,
+    borderWidth: 1,
+    height: 40.3,
   },
 });
