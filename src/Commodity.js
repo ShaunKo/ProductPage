@@ -9,6 +9,7 @@ import {
   FlatList,
   Animated,
   Dimensions,
+  ImageBackground,
 } from 'react-native';
 export const {width, height} = Dimensions.get('window');
 
@@ -17,7 +18,7 @@ import {Avatar, Icon} from 'react-native-elements';
 import {imageUri, Product, Product1, countsOfBuyer} from './Data.js';
 import ActionButton from 'react-native-action-button';
 import Lightbox from 'react-native-lightbox';
-import Test1 from './Test1.js';
+import Web from './Web.js';
 //父傳子
 export default class Commodity extends Component {
   constructor(props) {
@@ -37,6 +38,7 @@ export default class Commodity extends Component {
       deliver: [],
       deliverKeys: [], //運送方式
       table: [], //表格資料
+      text2: '', //webview
     };
   }
   getApi = () => {
@@ -69,6 +71,14 @@ export default class Commodity extends Component {
         table.push('全新');
         table.push(resource.location);
 
+        let text2 = resource.text2
+          .replace(/&gt;/g, '>')
+          .replace(/&lt;/g, '<')
+          .replace(/&quot;/g, '"')
+          .replace(/&amp;/g, '&')
+          .replace(/\r\n|\n/g, '')
+          .trim();
+
         this.setState({
           api: resource,
           image: image,
@@ -76,6 +86,7 @@ export default class Commodity extends Component {
           deliverMax,
           deliverKeys,
           table,
+          text2,
         });
         return resource;
       })
@@ -146,7 +157,7 @@ export default class Commodity extends Component {
       <View>
         {this.state.switchButton === 'productDesc' ? (
           <View>
-            <Test1 />
+            <Web text2={this.state.text2} />
             <View style={styles.tableContainer}>
               <View style={{width: width / 3}}>
                 {['分類', '庫存數', '上架時間', '使用狀況', '所在地'].map(
@@ -301,30 +312,6 @@ export default class Commodity extends Component {
       <Container>
         {this.floatIcon()}
         <Animated.View
-          style={
-            ({
-              opacity: this._getHeaderTitleOpacityDisappear(),
-            },
-            [styles.animatedDisappear])
-          }>
-          <View style={styles.padding10}>
-            <TouchableOpacity style={styles.imageIconContainer}>
-              <Icon name="chevron-left" color="white" />
-            </TouchableOpacity>
-          </View>
-          <View style={{width: width - 150}} />
-          <View style={styles.padding10}>
-            <TouchableOpacity style={styles.imageIconContainer}>
-              <Icon name="shopping-cart" color="white" />
-            </TouchableOpacity>
-          </View>
-          <View style={styles.padding10}>
-            <TouchableOpacity style={styles.imageIconContainer}>
-              <Icon name="more-vert" color="white" />
-            </TouchableOpacity>
-          </View>
-        </Animated.View>
-        <Animated.View
           style={[
             styles.animatedContainer,
             {
@@ -332,7 +319,7 @@ export default class Commodity extends Component {
               opacity: this._getHeaderTitleOpacity(),
             },
           ]}>
-          <View style={styles.padding10}>
+          <View style={styles.animatedIcon}>
             <TouchableOpacity style={styles.imageIconContainer}>
               <Icon name="chevron-left" color="black" />
             </TouchableOpacity>
@@ -341,13 +328,13 @@ export default class Commodity extends Component {
           <Text style={styles.animatedLeft} numberOfLines={1}>
             {allData.name}
           </Text>
-          <View style={styles.padding10}>
+          <View style={styles.animatedIcon}>
             <TouchableOpacity style={styles.imageIconContainer}>
               <Icon name="shopping-cart" color="black" />
             </TouchableOpacity>
           </View>
           {/* <View style={styles.flex1}> */}
-          <View style={styles.padding10}>
+          <View style={styles.animatedIcon}>
             <TouchableOpacity style={styles.imageIconContainer}>
               <Icon name="more-vert" color="black" />
             </TouchableOpacity>
@@ -372,7 +359,32 @@ export default class Commodity extends Component {
               return (
                 <Lightbox>
                   <View style={styles.container}>
-                    <Image style={styles.image} source={{uri: i}} />
+                    <ImageBackground style={styles.image} source={{uri: i}}>
+                      <Animated.View
+                        style={
+                          ({
+                            opacity: this._getHeaderTitleOpacityDisappear(),
+                          },
+                          [styles.animatedDisappear])
+                        }>
+                        <View style={styles.padding10}>
+                          <TouchableOpacity style={styles.imageIconContainer}>
+                            <Icon name="chevron-left" color="white" />
+                          </TouchableOpacity>
+                        </View>
+                        <View style={{width: width - 150}} />
+                        <View style={styles.padding10}>
+                          <TouchableOpacity style={styles.imageIconContainer}>
+                            <Icon name="shopping-cart" color="white" />
+                          </TouchableOpacity>
+                        </View>
+                        <View style={styles.padding10}>
+                          <TouchableOpacity style={styles.imageIconContainer}>
+                            <Icon name="more-vert" color="white" />
+                          </TouchableOpacity>
+                        </View>
+                      </Animated.View>
+                    </ImageBackground>
                   </View>
                 </Lightbox>
               );
@@ -536,7 +548,9 @@ export default class Commodity extends Component {
                   size="small"
                   rounded
                   title="F"
-                  onPress={() => { this.props.navigation.navigate('Personal')}}
+                  onPress={() => {
+                    this.props.navigation.navigate('Personal');
+                  }}
                   activeOpacity={0.7}
                   containerStyle={styles.avatar}
                 />
@@ -787,7 +801,8 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   recommandationImage: {
-    width: 100 + '%',
+    //width: 100 + '%',
+    width: (width - 40) / 2,
     height: 200,
   },
   bottomButton: {
@@ -905,13 +920,19 @@ const styles = StyleSheet.create({
     width: width - 150,
     fontSize: 18,
     padding: 10,
+    marginTop: 30,
+  },
+  animatedIcon: {
+    marginTop: 30,
+    padding: 10,
   },
   animatedContainer: {
     width: width,
     flexDirection: 'row',
-    marginTop: 20,
+    //marginTop: 20,
     position: 'absolute',
     zIndex: 500,
+    height: 75,
   },
   animatedDisappear: {
     zIndex: 100,

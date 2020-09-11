@@ -1,34 +1,8 @@
-export const item = {
-  itemName:
-    'TPE超厚瑜珈墊【特製加厚款附贈背帶+束帶】瑜珈墊183x80x1cm/野餐墊遊戲墊/韻律墊/健身墊/有氧瑜珈墊 | 露天拍賣',
-  price: '590',
-  salesVolume: '2',
-  favorite: '2',
-};
-
-export const transport = [
-  '郵寄寄送 90元',
-  '宅配／遞送 90元',
-  '貨到付款 130元',
-  '面交取貨 0 元',
-  '面交取貨付款 0 元',
-];
 
 export const imageUri = [
   '/Users/shaun/Desktop/截圖 2020-08-25 下午5.16.05.png',
   '/Users/shaun/Desktop/截圖 2020-08-25 下午5.16.18.png',
   '/Users/shaun/Desktop/截圖 2020-08-25 下午5.16.30.png',
-];
-
-export const payment = [
-  'Pi 拍錢包X支付連   最高P幣4%回饋(說明)',
-  'PChomePay支付連 信用卡',
-  'PChomePay支付連 現金 (ATM、餘額、銀行支付)',
-  'PChome國際連儲值餘額儲',
-  '銀行或郵局轉帳',
-  '郵局無摺存款',
-  '貨到付款',
-  '面交取貨付款',
 ];
 
 export const Product = [
@@ -115,12 +89,3 @@ export const countsOfBuyer = [
     time: '2020-8-19 01:35:30',
   },
 ];
-
-export const t = [
-  {
-  id: "21916979988425",
-  class: "002000040007",
-  name: "(免運費)時尚顯瘦女泳衣 連體式泳衣 女士泳裝",
-  num: 14,
-  }
-  ]
